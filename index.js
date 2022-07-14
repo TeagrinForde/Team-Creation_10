@@ -1,5 +1,5 @@
 //pulls collected information
-const EmployeeForm = require('./lib/classes');
+const EmployeeForm = require('./lib/Employee');
 
 //puts the collected information into a new employee form
 const employeeForm = new EmployeeForm();
