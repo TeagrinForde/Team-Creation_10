@@ -1,8 +1,8 @@
 //pulls collected information
-const EmployeeForm = require('./lib/Employee');
+const Employee = require('./lib/Employee');
 
 //puts the collected information into a new employee form
-const employeeForm = new EmployeeForm();
+const employee = new Employee();
 
 //starts the employee form
-employeeForm.start();
+employee.getRole();
