@@ -1,11 +1,15 @@
 //packages needed for this application
 const inquirer = require('inquirer');
-const Employee = require('./lib/Employee');
 const fs = require('fs');
-const { isNumberObject } = require('util/types');
+const Employee = require('./lib/Employee');
+const Manager = require('./lib/Manager');
+const Engineer = require('./lib/Engineer');
+const Intern = require('./lib/Intern');
+
+// const { isNumberObject } = require('util/types');
 console.log(process.argv);
 
-const team = [];
+let team = [];
 function addManager() {
     inquirer
         .prompt([
@@ -18,6 +22,12 @@ function addManager() {
                 type: 'input',
                 message: "Manager's employee ID number: ",
                 name: 'id',
+                validate: (input) => {
+                    if (isNaN(input)) {
+                        return 'Please include only numeric values.';
+                    }
+                    return true;
+                }
             },
             {
                 type: 'input',
@@ -37,16 +47,16 @@ function addManager() {
             }
         ])
         .then((response) => {
-            const manager = new Manager(
-                response.managerName,
-                response.managerId,
-                response.managerEmail,
-                response.managerOfficeNumber,
+            let manager = new Manager(
+                response.name,
+                response.id,
+                response.email,
+                response.officeNumber,
             );
             team.push(manager);
             nextEmployee();
         });
-}
+};
 addManager();
 
 //prompt for choosing next employee or submitting team
@@ -60,16 +70,19 @@ function nextEmployee() {
                 choices: ['Engineer', 'Intern', 'Employee', 'DONE building team'],
             }
         ])
-        if(answer == engineer) {
-            addEngineer();
-        } else if(answer == intern) {
-            addIntern();
-        } else if(answer == employee) {
-            addEmployee();
-        } else {
-            buildTeam();
-        }
-}
+        .then((answer) => {
+            if(answer.role === 'Engineer') {
+                addEngineer();
+            } else if(answer.role === 'Intern') {
+                addIntern();
+            } else if(answer.role === 'Employee') {
+                addEmployee();
+            } else {
+                console.log('Teamwork makes the dream work!')
+                buildTeam();
+            }
+        })        
+};
 
 function addEngineer() {
     inquirer
@@ -97,15 +110,15 @@ function addEngineer() {
         ])
         .then((response) => {
             const engineer = new Engineer(
-                response.engineerName,
-                response.engineerId,
-                response.engineerEmail,
-                response.engineerGithub,
+                response.name,
+                response.id,
+                response.email,
+                response.github,
             );
             team.push(engineer);
             nextEmployee();
         });
-}
+};
 
 function addIntern() {
     inquirer
@@ -133,16 +146,16 @@ function addIntern() {
         ])
         .then((response) => {
             const intern = new Intern(
-                response.internName,
-                response.internId,
-                response.internEmail,
-                response.internGithub,
+                response.name,
+                response.id,
+                response.email,
+                response.school,
             );
             team.push(intern);
             buildTeam();
             nextEmployee();
         });
-}
+};
 
 function addEmployee() {
     inquirer
@@ -165,20 +178,19 @@ function addEmployee() {
         ])
         .then((response) => {
             const employee = new Employee(
-                response.employeeName,
-                response.employeeId,
-                response.employeeEmail,
-                response.employeeGithub,
+                response.name,
+                response.id,
+                response.email,
             );
             team.push(employee);
             buildTeam();
             nextEmployee();
         });
-}
+};
 
 function buildTeam() {
     if(!fs.existsSync(DIST_DIR)) { //must create directory since it doesn't exist yet
         fs.mkdirSync(DIST_DIR);
     }
     fs.writeFileSync(distPath, render(team), 'utf-8'); //put info into directory as html
-}
+};
