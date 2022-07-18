@@ -189,8 +189,9 @@ function addEmployee() {
 };
 
 function buildTeam() {
-    if(!fs.existsSync(DIST_DIR)) { //must create directory since it doesn't exist yet
-        fs.mkdirSync(DIST_DIR);
-    }
-    fs.writeFileSync(distPath, render(team), 'utf-8'); //put info into directory as html
+    // if(!fs.existsSync(DIST_DIR)) { //must create directory since it doesn't exist yet
+    //     fs.mkdirSync(DIST_DIR);
+    // }
+    // fs.writeFileSync(distPath, render(team), 'utf-8'); //put info into directory as html
+    console.log(team);
 };
