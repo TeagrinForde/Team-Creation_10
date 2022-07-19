@@ -9,7 +9,7 @@ const Intern = require('./lib/Intern');
 // const { isNumberObject } = require('util/types');
 console.log(process.argv);
 
-let team = [];
+const team = [];
 function addManager() {
     inquirer
         .prompt([
@@ -47,7 +47,7 @@ function addManager() {
             }
         ])
         .then((response) => {
-            let manager = new Manager(
+            const manager = new Manager(
                 response.name,
                 response.id,
                 response.email,
@@ -57,7 +57,6 @@ function addManager() {
             nextEmployee();
         });
 };
-addManager();
 
 //prompt for choosing next employee or submitting team
 function nextEmployee() {
@@ -71,17 +70,18 @@ function nextEmployee() {
             }
         ])
         .then((answer) => {
-            if(answer.role === 'Engineer') {
+            if (answer.role === 'Engineer') {
                 addEngineer();
-            } else if(answer.role === 'Intern') {
+            } else if (answer.role === 'Intern') {
                 addIntern();
-            } else if(answer.role === 'Employee') {
+            } else if (answer.role === 'Employee') {
                 addEmployee();
             } else {
-                console.log('Teamwork makes the dream work!')
+                console.log('Teamwork makes the dream work!');
+                console.log(team);
                 buildTeam();
             }
-        })        
+        })
 };
 
 function addEngineer() {
@@ -152,7 +152,6 @@ function addIntern() {
                 response.school,
             );
             team.push(intern);
-            buildTeam();
             nextEmployee();
         });
 };
@@ -183,15 +182,102 @@ function addEmployee() {
                 response.email,
             );
             team.push(employee);
-            buildTeam();
             nextEmployee();
         });
 };
 
-function buildTeam() {
-    // if(!fs.existsSync(DIST_DIR)) { //must create directory since it doesn't exist yet
-    //     fs.mkdirSync(DIST_DIR);
-    // }
-    // fs.writeFileSync(distPath, render(team), 'utf-8'); //put info into directory as html
-    console.log(team);
+// function importCards(role) {
+//     switch (role.getRole()) {
+//     case 'Engineer':
+//         return `<div class="card text-bg-info mb-3" style="max-width: 18rem;">
+//         <div class="card-header d-flex justify-content-between align-items-center">
+//         Engineer <img
+//         src="https://cdn.onlinewebfonts.com/svg/img_533250.png"
+//         alt="Engineer" type="image/png" style="width:50px;height:50px;"> 
+//         </div>
+//         <h5 class="card-text m-2">${role.name}</h5>
+//           <ul class="list-group list-group-flush">
+//             <li class="list-group-item">${role.id}</li>
+//             <li class="list-group-item">${role.email}</li>
+//             <li class="list-group-item">${role.github}</li>
+//           </ul>
+//         </div>`;
+//         case 'Intern':
+//         return `<div class="card text-bg-info mb-3" style="max-width: 18rem;">
+//         <div class="card-header d-flex justify-content-between align-items-center">
+//           Intern <img
+//           src="https://history.missouri.edu/sites/default/files/nav-icons/noun_internship_516824_1a1a1a.png"
+//           alt="Intern" type="image/png" style="width:50px;height:50px;"> 
+//         </div>
+//         <h5 class="card-text m-2">${role.name}</h5>
+//         <ul class="list-group list-group-flush">
+//           <li class="list-group-item">${role.id}</li>
+//           <li class="list-group-item">${role.email}</li>
+//           <li class="list-group-item">${role.school}</li>
+//         </ul>
+//         </div>`;
+//         case 'Employee':
+//         return `<div class="card text-bg-info mb-3" style="max-width: 18rem;">
+//         <div class="card-header d-flex justify-content-between align-items-center">
+//             Employee <img
+//             src="https://cdn.onlinewebfonts.com/svg/img_233258.png"
+//             alt="Employee" type="image/png" style="width:50px;height:50px;"> 
+//         </div>
+//         <h5 class="card-text m-2">${team.name}</h5>
+//         <ul class="list-group list-group-flush">
+//             <li class="list-group-item">${team.id}</li>
+//             <li class="list-group-item">${team.email}</li>
+//         </ul>
+//       </div>`;
+//     };
+// };
+
+function generateHTML(manager) {
+    // importCards();
+    `<!DOCTYPE html>
+    <html lang="en">
+    
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <title>Generated Team</title>
+    </head>
+    
+    <body>
+        <div class="jumbotron jumbotron-fluid justify-content-center">
+            <div class="container">
+                <h1 class="display-4">Wonder Team, ACTIVATE!</h1>
+            </div>
+        </div>
+    
+        <div class="card-group container-fluid d-flex justify-content-between">
+    
+                <div class="card text-bg-info mb-3" style="max-width: 18rem;">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        Manager <img
+                        src="https://www.clipartkey.com/mpngs/m/65-656685_board-of-directors-management-icon-png.png"
+                        alt="Manager" type="image/png" style="width:50px;height:50px;"> 
+                    </div>
+                    <h5 class="card-text m-2">${manager.name}</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">${manager.id}</li>
+                        <li class="list-group-item">${manager.email}</li>
+                        <li class="list-group-item">${manager.officeNumber}</li>
+                    </ul>
+                </div>
+                {INSERT cards HERE}
+    </div>
+    </body>
+    </html>`
 };
+
+function buildTeam() {
+    fs.writeFile('./dist/index.html', generateHTML(), (err) => 
+    err ? console.log(err) : console.log('Generating HTML... ')); //put info into directory as html
+};
+
+addManager();
