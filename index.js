@@ -6,9 +6,6 @@ const Manager = require('./lib/Manager');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
 
-// const { isNumberObject } = require('util/types');
-console.log(process.argv);
-
 const team = [];
 function addManager() {
     inquirer
@@ -17,11 +14,13 @@ function addManager() {
                 type: 'input',
                 message: "Enter the Manager's name: ",
                 name: 'name',
+                default: 'Teagrin',
             },
             {
                 type: 'input',
                 message: "Manager's employee ID number: ",
                 name: 'id',
+                default: '1',
                 validate: (input) => {
                     if (isNaN(input)) {
                         return 'Please include only numeric values.';
@@ -33,11 +32,13 @@ function addManager() {
                 type: 'input',
                 message: "Manager's email address: ",
                 name: 'email',
+                default: 'Teagrin@aol.com',
             },
             {
                 type: 'input',
                 message: "Manager's office number: ",
                 name: 'officeNumber',
+                default: '1',
                 validate: (input) => {
                     if (isNaN(input)) {
                         return 'Please include only numeric values.';
@@ -66,7 +67,7 @@ function nextEmployee() {
                 type: 'list',
                 message: 'Select another employee role to build your team',
                 name: 'role',
-                choices: ['Engineer', 'Intern', 'Employee', 'DONE building team'],
+                choices: ['Engineer', 'Intern', 'DONE building team'],
             }
         ])
         .then((answer) => {
@@ -74,8 +75,6 @@ function nextEmployee() {
                 addEngineer();
             } else if (answer.role === 'Intern') {
                 addIntern();
-            } else if (answer.role === 'Employee') {
-                addEmployee();
             } else {
                 console.log('Teamwork makes the dream work!');
                 console.log(team);
@@ -91,21 +90,32 @@ function addEngineer() {
                 type: 'input',
                 message: "Enter Engineer's name: ",
                 name: 'name',
+                default: 'Will',
             },
             {
                 type: 'input',
                 message: "Engineer's employee ID number: ",
                 name: 'id',
+                default: '2',
+                validate: (input) => {
+                    if (isNaN(input)) {
+                        return 'Please include only numeric values.';
+                    }
+                    return true;
+                }
             },
             {
                 type: 'input',
                 message: "Engineer's email address: ",
                 name: 'email',
+                default: 'Will@aol.com',
             },
             {
                 type: 'input',
                 message: "Engineer's GitHub username: ",
                 name: 'github',
+                default: 'WilliamSUM'
+
             }
         ])
         .then((response) => {
@@ -127,21 +137,31 @@ function addIntern() {
                 type: 'input',
                 message: "Enter Intern's name: ",
                 name: 'name',
+                default: 'Hunter',
             },
             {
                 type: 'input',
                 message: "Intern's employee ID number: ",
                 name: 'id',
+                default: '3',
+                validate: (input) => {
+                    if (isNaN(input)) {
+                        return 'Please include only numeric values.';
+                    }
+                    return true;
+                }
             },
             {
                 type: 'input',
                 message: "Intern's email address: ",
                 name: 'email',
+                default: 'Hunter@aol.com',
             },
             {
                 type: 'input',
                 message: "Intern's school/university: ",
                 name: 'school',
+                default: 'University of South Florida',
             }
         ])
         .then((response) => {
@@ -156,87 +176,52 @@ function addIntern() {
         });
 };
 
-function addEmployee() {
-    inquirer
-        .prompt([
-            {
-                type: 'input',
-                message: "Enter Employee's name: ",
-                name: 'name',
-            },
-            {
-                type: 'input',
-                message: "Employee's ID number: ",
-                name: 'id',
-            },
-            {
-                type: 'input',
-                message: "Employee's email address: ",
-                name: 'email',
-            }
-        ])
-        .then((response) => {
-            const employee = new Employee(
-                response.name,
-                response.id,
-                response.email,
-            );
-            team.push(employee);
-            nextEmployee();
-        });
+function importCards(role) {
+    switch (role.getRole()) {
+        case 'Engineer':
+            return `<div class="card text-bg-info mb-3" style="max-width: 18rem;">
+        <div class="card-header d-flex justify-content-between align-items-center">
+        Engineer <img
+        src="https://cdn.onlinewebfonts.com/svg/img_533250.png"
+        alt="Engineer" type="image/png" style="width:50px;height:50px;"> 
+        </div>
+        <h5 class="card-text m-2">${role.name}</h5>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">${role.id}</li>
+            <li class="list-group-item"><a href='mailto:${role.email}'>Email ME</a></li>
+            <li class="list-group-item"><a href='https://github.com/${role.github}'>GitHub Username</a></li>
+          </ul>
+        </div>`;
+        case 'Intern':
+            return `<div class="card text-bg-info mb-3" style="max-width: 18rem;">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          Intern <img
+          src="https://history.missouri.edu/sites/default/files/nav-icons/noun_internship_516824_1a1a1a.png"
+          alt="Intern" type="image/png" style="width:50px;height:50px;"> 
+        </div>
+        <h5 class="card-text m-2">${role.name}</h5>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">${role.id}</li>
+          <li class="list-group-item"><a href='mailto:${role.email}'>Email ME</a></li>
+          <li class="list-group-item">${role.school}</li>
+        </ul>
+        </div>`;
+    };
 };
 
-// function importCards(role) {
-//     switch (role.getRole()) {
-//     case 'Engineer':
-//         return `<div class="card text-bg-info mb-3" style="max-width: 18rem;">
-//         <div class="card-header d-flex justify-content-between align-items-center">
-//         Engineer <img
-//         src="https://cdn.onlinewebfonts.com/svg/img_533250.png"
-//         alt="Engineer" type="image/png" style="width:50px;height:50px;"> 
-//         </div>
-//         <h5 class="card-text m-2">${role.name}</h5>
-//           <ul class="list-group list-group-flush">
-//             <li class="list-group-item">${role.id}</li>
-//             <li class="list-group-item">${role.email}</li>
-//             <li class="list-group-item">${role.github}</li>
-//           </ul>
-//         </div>`;
-//         case 'Intern':
-//         return `<div class="card text-bg-info mb-3" style="max-width: 18rem;">
-//         <div class="card-header d-flex justify-content-between align-items-center">
-//           Intern <img
-//           src="https://history.missouri.edu/sites/default/files/nav-icons/noun_internship_516824_1a1a1a.png"
-//           alt="Intern" type="image/png" style="width:50px;height:50px;"> 
-//         </div>
-//         <h5 class="card-text m-2">${role.name}</h5>
-//         <ul class="list-group list-group-flush">
-//           <li class="list-group-item">${role.id}</li>
-//           <li class="list-group-item">${role.email}</li>
-//           <li class="list-group-item">${role.school}</li>
-//         </ul>
-//         </div>`;
-//         case 'Employee':
-//         return `<div class="card text-bg-info mb-3" style="max-width: 18rem;">
-//         <div class="card-header d-flex justify-content-between align-items-center">
-//             Employee <img
-//             src="https://cdn.onlinewebfonts.com/svg/img_233258.png"
-//             alt="Employee" type="image/png" style="width:50px;height:50px;"> 
-//         </div>
-//         <h5 class="card-text m-2">${team.name}</h5>
-//         <ul class="list-group list-group-flush">
-//             <li class="list-group-item">${team.id}</li>
-//             <li class="list-group-item">${team.email}</li>
-//         </ul>
-//       </div>`;
-//     };
-// };
+function createCards() {
+    let allCards = ' ';
+    for (var i = 0; i < team.length; i++) {
+        allCards = allCards + importCards(team[i]);
+    }
+    console.log(allCards);
+    return allCards.replace('undefined', '');
+}
+
 
 function generateHTML(manager) {
-    // importCards();
-    `<!DOCTYPE html>
+    return `<!DOCTYPE html>
     <html lang="en">
-    
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -265,19 +250,21 @@ function generateHTML(manager) {
                     <h5 class="card-text m-2">${manager.name}</h5>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">${manager.id}</li>
-                        <li class="list-group-item">${manager.email}</li>
+                        <li class="list-group-item"><a href='mailto:${manager.email}'>Email ME</a></li>
                         <li class="list-group-item">${manager.officeNumber}</li>
                     </ul>
+                    </div>
+                ${createCards()}
                 </div>
-                {INSERT cards HERE}
-    </div>
+        </div>
     </body>
-    </html>`
+    </html>`;
 };
 
-function buildTeam() {
-    fs.writeFile('./dist/index.html', generateHTML(), (err) => 
-    err ? console.log(err) : console.log('Generating HTML... ')); //put info into directory as html
+const buildTeam = function() {
+    const newHTML = generateHTML(team[0]);
+    fs.writeFile('./dist/index.html', newHTML, (error) => //put info into directory as html
+    error ? console.log(error) : console.log('Generating HTML file in dist folder...')); 
 };
 
 addManager();
