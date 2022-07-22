@@ -6,6 +6,6 @@ Engineers will submit their name, email, id and github username while interns wi
 ![image](https://user-images.githubusercontent.com/101753839/179880857-00a26b62-2216-4388-b0b9-aa33fa6114de.png)
 
 Once the user completes their team, an html file is generated in the locat dist folder. Watch the video below for detailed instructions.
-https://drive.google.com/file/d/1kHn3i7j-kenQrXN-6UBRw_aKiwslGtPM/view
+https://drive.google.com/file/d/1D3dAX8uGrXQusmUm7eEDsm3bIZhJv-Sj/view
 
 https://teagrinforde.github.io/Team-Creation_10/
